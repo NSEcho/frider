@@ -37,10 +37,63 @@ Use "frider [command] --help" for more information about a command.
 `app` subcommand allows you to list applications, kill specific PID, load scripts from the database 
 or from some other file.
 
+```bash
+$ frider app --help
+Interact with device applications using frida
+
+Usage:
+  frider app [command]
+
+Available Commands:
+  kill        Kill specific process or application
+
+Flags:
+  -h, --help   help for app
+
+Use "frider app [command] --help" for more information about a command.
+```
+
 ## backup
 
 `backup` allows you to quickly export data(`backup export`) from the database so that it can be transferred to another device by using `backup import` subcommand.
 
+```bash
+$ frider backup --help
+Manage database backups
+
+Usage:
+  frider backup [command]
+
+Available Commands:
+  export      Export scripts
+  import      Import exported .frider scripts
+
+Flags:
+  -h, --help   help for backup
+
+Use "frider backup [command] --help" for more information about a command.
+```
+
 ## script
 
 `script` subcommand is the main command that interacts with the database, stores the script, prints them to the screen as well as deleting them.
+
+```bash
+$ frider script --help
+Manage database scripts
+
+Usage:
+  frider script [command]
+
+Available Commands:
+  delete      Delete script from the database
+  get         Get content of the script as file
+  print       Print all the scripts
+  save        Save script
+  show        Show specific script
+
+Flags:
+  -h, --help   help for script
+
+Use "frider script [command] --help" for more information about a command
+```
