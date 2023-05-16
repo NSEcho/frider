@@ -26,7 +26,7 @@ var printCmd = &cobra.Command{
 		t.AppendHeader(table.Row{"#", "Name", "Category"})
 
 		for i, script := range scripts {
-			t.AppendRow(table.Row{i, script.Name, script.Category})
+			t.AppendRow(table.Row{i + 1, script.Name, script.Category})
 		}
 
 		t.SetTitle("Scripts")
