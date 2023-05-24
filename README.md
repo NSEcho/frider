@@ -3,7 +3,7 @@ Manage scripts and interact with applications using frida.
 
 `frider` is a tool that allows you to manage your scripts and keep them in one place. 
 Also, using [frida-go-bindings](https://github.com/frida/frida-go) it allows you to interact with the application 
-using Frida.
+using Frida. Prior to installing `frider` you need to have devkit downloaded, according to the instructions inside [frida-go](https://github.com/frida/frida-go).
 
 # Installation
 
@@ -35,7 +35,7 @@ Use "frider [command] --help" for more information about a command.
 ## app
 
 `app` subcommand allows you to list applications, kill specific PID, load scripts from the database 
-or from some other file.
+or use raw script file.
 
 ```bash
 $ frider app --help
@@ -46,6 +46,7 @@ Usage:
 
 Available Commands:
   kill        Kill specific process or application
+  load        Load script from the database to the application
 
 Flags:
   -h, --help   help for app
