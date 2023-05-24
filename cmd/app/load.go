@@ -7,6 +7,7 @@ import (
 	"github.com/frida/frida-go/frida"
 	"github.com/nsecho/frider/internal/database"
 	"github.com/spf13/cobra"
+	"io"
 	"os"
 )
 
@@ -20,19 +21,41 @@ var loadCmd = &cobra.Command{
 
 		scriptName := args[0]
 
-		db, err := database.NewDatabase()
-		if err != nil {
-			return err
-		}
-		defer db.Close()
-
-		dbScript, found, err := db.ScriptByName(scriptName)
+		file, err := cmd.Flags().GetString("file")
 		if err != nil {
 			return err
 		}
 
-		if !found {
-			return errors.New("no such application")
+		var scriptContent string
+
+		if file != "" {
+			f, err := os.Open(file)
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			data, err := io.ReadAll(f)
+			if err != nil {
+				return err
+			}
+			scriptContent = string(data)
+		} else {
+			db, err := database.NewDatabase()
+			if err != nil {
+				return err
+			}
+			defer db.Close()
+
+			dbScript, found, err := db.ScriptByName(scriptName)
+			if err != nil {
+				return err
+			}
+
+			if !found {
+				return errors.New("no such application")
+			}
+			scriptContent = string(dbScript.Content)
 		}
 
 		appName, err := cmd.Flags().GetString("app")
@@ -52,7 +75,7 @@ var loadCmd = &cobra.Command{
 		}
 		defer session.Clean()
 
-		script, err := session.CreateScript(string(dbScript.Content))
+		script, err := session.CreateScript(scriptContent)
 		if err != nil {
 			return err
 		}
