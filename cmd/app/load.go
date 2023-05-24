@@ -15,15 +15,18 @@ var loadCmd = &cobra.Command{
 	Use:   "load [script name]",
 	Short: "Load script from the database to the application",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) == 0 {
-			return errors.New("missing script name")
-		}
-
-		scriptName := args[0]
-
 		file, err := cmd.Flags().GetString("file")
 		if err != nil {
 			return err
+		}
+
+		scriptName, err := cmd.Flags().GetString("script")
+		if err != nil {
+			return err
+		}
+
+		if file == "" && scriptName == "" {
+			return errors.New("you need to pass either file or script from database")
 		}
 
 		var scriptContent string
@@ -107,6 +110,8 @@ var loadCmd = &cobra.Command{
 }
 
 func init() {
+	loadCmd.Flags().StringP("script", "s", "", "name of the script from database")
+	loadCmd.Flags().StringP("file", "f", "", "path to the script")
 	loadCmd.Flags().StringP("app", "a", "", "which application to attach to")
 	AppCmd.AddCommand(loadCmd)
 }
