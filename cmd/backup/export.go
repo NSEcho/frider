@@ -2,7 +2,8 @@ package backup
 
 import (
 	"encoding/gob"
-	"fmt"
+	"errors"
+	"github.com/apex/log"
 	"github.com/nsecho/frider/internal/database"
 	"github.com/spf13/cobra"
 	"os"
@@ -15,6 +16,10 @@ var exportCmd = &cobra.Command{
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {
 			return err
+		}
+
+		if output == "" {
+			return errors.New("output filename cannot be empty")
 		}
 
 		f, err := os.Create(output)
@@ -38,8 +43,7 @@ var exportCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("[*] Exported %d scripts to %s\n",
-			len(scripts), output)
+		log.Infof("Exported %d scripts to %s", len(scripts), output)
 
 		return nil
 	},

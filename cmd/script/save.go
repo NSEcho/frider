@@ -3,7 +3,7 @@ package script
 import (
 	"bytes"
 	"errors"
-	"fmt"
+	"github.com/apex/log"
 	"github.com/nsecho/frider/internal/database"
 	"github.com/spf13/cobra"
 	"io"
@@ -62,7 +62,7 @@ var saveCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("[*] Saved script from %s with name %s and category %s\n",
+		log.Infof("Saved script from %s with name %s and category %s",
 			scriptPath, name, category)
 
 		return nil

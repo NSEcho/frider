@@ -2,7 +2,8 @@ package backup
 
 import (
 	"encoding/gob"
-	"fmt"
+	"errors"
+	"github.com/apex/log"
 	"github.com/nsecho/frider/internal/database"
 	"github.com/spf13/cobra"
 	"os"
@@ -15,6 +16,10 @@ var importCmd = &cobra.Command{
 		input, err := cmd.Flags().GetString("input")
 		if err != nil {
 			return err
+		}
+
+		if input == "" {
+			return errors.New("input file cannot be empty")
 		}
 
 		f, err := os.Open(input)
@@ -41,8 +46,7 @@ var importCmd = &cobra.Command{
 			}
 		}
 
-		fmt.Printf("[*] Imported %d scripts from %s\n",
-			len(scripts), input)
+		log.Infof("Imported %d scripts from %s", len(scripts), input)
 
 		return nil
 	},

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"fmt"
+	"github.com/apex/log"
 	"github.com/frida/frida-go/frida"
 	"github.com/spf13/cobra"
 )
@@ -22,17 +22,26 @@ var listCmd = &cobra.Command{
 			return err
 		}
 
+		if all {
+			log.Infof("Reading non started applications")
+		}
+
 		for _, app := range apps {
 			func() {
 				defer app.Clean()
 				switch app.PID() {
 				case 0:
 					if all {
-						fmt.Printf("[*] %d %s (%s)\n", app.PID(), app.Name(), app.Identifier())
+						log.WithFields(log.Fields{
+							"identifier": app.Identifier(),
+							"pid":        app.PID(),
+						}).Infof("%s", app.Name())
 					}
 				default:
-					fmt.Printf("[*] %d %s (%s)\n", app.PID(), app.Name(), app.Identifier())
-
+					log.WithFields(log.Fields{
+						"identifier": app.Identifier(),
+						"pid":        app.PID(),
+					}).Infof("%s", app.Name())
 				}
 			}()
 		}

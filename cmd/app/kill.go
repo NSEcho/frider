@@ -2,7 +2,7 @@ package app
 
 import (
 	"errors"
-	"fmt"
+	"github.com/apex/log"
 	"github.com/frida/frida-go/frida"
 	"github.com/spf13/cobra"
 	"strings"
@@ -41,9 +41,7 @@ var killCmd = &cobra.Command{
 		if err := dev.Kill(pid); err != nil {
 			return err
 		}
-
-		fmt.Printf("[*] Killed %s application with PID %d\n",
-			appName, pid)
+		log.Infof("Killed %s with PID %d", appName, pid)
 		return nil
 	},
 }

@@ -2,6 +2,7 @@ package script
 
 import (
 	"errors"
+	"github.com/apex/log"
 	"github.com/nsecho/frider/internal/database"
 	"github.com/spf13/cobra"
 )
@@ -20,6 +21,12 @@ var deleteCmd = &cobra.Command{
 			return err
 		}
 		defer db.Close()
+
+		if err := db.Delete(scriptName); err != nil {
+			return err
+		}
+
+		log.Infof("Deleted script %s", scriptName)
 
 		return db.Delete(scriptName)
 	},
