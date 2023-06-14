@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"github.com/apex/log"
 	"github.com/frida/frida-go/frida"
 	"github.com/spf13/cobra"
@@ -11,6 +12,9 @@ var listCmd = &cobra.Command{
 	Short: "List applications",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		dev := frida.USBDevice()
+		if dev == nil {
+			return errors.New("no USB device connected")
+		}
 		apps, err := dev.EnumerateApplications("", frida.ScopeMinimal)
 		if err != nil {
 			return err
